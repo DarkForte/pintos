@@ -90,8 +90,8 @@ thread_init (void)
   ASSERT (intr_get_level () == INTR_OFF);
 
   lock_init (&tid_lock);
-  list_init (&ready_list);
-  list_init (&all_list);
+  list_init (&ready_list); //Initialize the ready list
+  list_init (&all_list); // Initialize the all_list
 
   /* Set up a thread structure for the running thread. */
   initial_thread = running_thread ();
@@ -133,7 +133,8 @@ thread_tick (void)
 #endif
   else
     kernel_ticks++;
-
+	
+	t->run_time++;
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
@@ -247,6 +248,7 @@ thread_unblock (struct thread *t)
   ASSERT (t->status == THREAD_BLOCKED);
   list_push_back (&ready_list, &t->elem);
   t->status = THREAD_READY;
+  t->entry_time = timer_ticks();
   intr_set_level (old_level);
 }
 
@@ -318,7 +320,9 @@ thread_yield (void)
   if (cur != idle_thread) 
     list_push_back (&ready_list, &cur->elem);
   cur->status = THREAD_READY;
+  cur->entry_time = timer_ticks();
   schedule ();
+  //printf("Name: %s run_time:%d\n", thread_current()->name, thread_current()->run_time);
   intr_set_level (old_level);
 }
 
@@ -468,6 +472,10 @@ init_thread (struct thread *t, const char *name, int priority)
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
+  
+  t->run_time = timer_ticks();
+  t->entry_time = 0;
+  
   t->magic = THREAD_MAGIC;
   list_push_back (&all_list, &t->allelem);
 }
@@ -485,6 +493,18 @@ alloc_frame (struct thread *t, size_t size)
   return t->stack;
 }
 
+/*cmp func*/
+static bool cmp (const struct list_elem *a, const struct list_elem *b, void *aux)
+{
+	struct thread *t1 = list_entry(a, struct thread, elem);
+	struct thread *t2 = list_entry(b, struct thread, elem);
+	
+	if(t1->priority == t2->priority)
+		return t1->entry_time < t2->entry_time;
+	
+	return (t1->priority > t2->priority);
+}
+
 /* Chooses and returns the next thread to be scheduled.  Should
    return a thread from the run queue, unless the run queue is
    empty.  (If the running thread can continue running, then it
@@ -496,7 +516,12 @@ next_thread_to_run (void)
   if (list_empty (&ready_list))
     return idle_thread;
   else
-    return list_entry (list_pop_front (&ready_list), struct thread, elem);
+  {
+	list_sort(&ready_list, cmp, NULL);
+	struct thread* now = list_entry (list_pop_front (&ready_list), struct thread, elem);
+	return now;
+  }
+    //return list_entry (list_pop_front (&ready_list), struct thread, elem);
 }
 
 /* Completes a thread switch by activating the new thread's page
@@ -562,10 +587,15 @@ schedule (void)
   ASSERT (intr_get_level () == INTR_OFF);
   ASSERT (cur->status != THREAD_RUNNING);
   ASSERT (is_thread (next));
-
   if (cur != next)
+  {
+	cur->entry_time = 
     prev = switch_threads (cur, next);
+  }
   schedule_tail (prev); 
+  
+  printf("%s %d\n", cur->name, cur->entry_time);
+  //getchar();
 }
 
 /* Returns a tid to use for a new thread. */
