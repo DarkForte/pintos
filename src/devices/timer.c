@@ -95,6 +95,17 @@ timer_elapsed (int64_t then)
 {
   return timer_ticks () - then;
 }
+//自定义比较函数 
+bool
+cmp(struct list_elem* x,struct list_elem* y,void* aux)
+{
+	ASSERT(x != NULL);
+	ASSERT(y != NULL);
+	struct sleep_thread1 *f1 = list_entry(x, struct sleep_thread1, elem);
+	struct sleep_thread1 *f2 = list_entry(y, struct sleep_thread1, elem);
+	return (f1->wake_time) < (f2->wake_time);
+}
+
 
 /* Sleeps for approximately TICKS timer ticks.  Interrupts must
    be turned on. */
@@ -112,7 +123,8 @@ timer_sleep (int64_t ticks)
   	struct  sleep_thread1 tmp; 
 	tmp.ptr = thread_current();
 	tmp.wake_time = start+ticks;
-	list_push_back(&sleep_list,&tmp.elem);
+	//list_push_back(&sleep_list,&tmp.elem);
+	list_insert_ordered(&sleep_list,&tmp.elem,cmp,NULL);
  	enum intr_level old_level = intr_disable ();
 	thread_block(); //该函数要求必须关中断 
 	intr_set_level (old_level);
@@ -202,11 +214,12 @@ timer_interrupt (struct intr_frame *args UNUSED)
         if(f->wake_time <= timer_ticks ())
         {
         	thread_unblock(f->ptr);
-        	e = list_remove(&f->elem);
+        	e = list_remove(e);
         }
         else
         {
-        	e = list_next (e);
+        	break;
+		//e = list_next(e);
         }
     }	
   thread_tick ();
