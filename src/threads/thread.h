@@ -5,6 +5,8 @@
 #include <list.h>
 #include <stdint.h>
 
+#include "decimal.h"
+
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -103,8 +105,35 @@ struct thread
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
+	
+	//+++++++++++++++
+	
+	/* nice value */
+	int nice;
+	
+	/* recent cpu value */
+	decimal recent_cpu;
+	
+	//---------------
+	
   };
 
+//+++++++++++++++
+	
+/* load_avg value */
+decimal load_avg;
+
+/* update load_avg */
+void update_load_avg (void);
+	
+/* update recent_cpu */
+void update_recent_cpu (void);	
+
+/* update priority */
+void update_priority (void);	
+
+//---------------
+	
 /* If false (default), use round-robin scheduler.
    If true, use multi-level feedback queue scheduler.
    Controlled by kernel command-line option "-o mlfqs". */

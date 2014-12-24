@@ -15,6 +15,13 @@ struct  sleep_thread1{
 	struct list_elem elem;
 };
 
+//+++++++++++++++
+
+extern update_load_avg ();
+
+extern bool thread_mlfqs;
+
+//---------------
 
 void timer_init (void);
 void timer_calibrate (void);

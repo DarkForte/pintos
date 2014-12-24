@@ -209,6 +209,25 @@ timer_interrupt (struct intr_frame *args UNUSED)
         	e = list_next (e);
         }
     }	
+		
+	//+++++++++++++++
+	
+	/* update the value of load_avg */
+	
+	if (timer_ticks () % TIMER_FREQ == 0 && thread_mlfqs)
+		{
+			enum intr_level old_level;
+			old_level = intr_disable ();
+			
+			update_load_avg ();
+			update_recent_cpu ();
+			update_priority ();
+			
+			intr_set_level (old_level);
+		}
+		
+	//---------------
+	
   thread_tick ();
 }
 
