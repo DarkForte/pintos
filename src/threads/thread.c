@@ -71,6 +71,15 @@ static void schedule (void);
 void schedule_tail (struct thread *prev);
 static tid_t allocate_tid (void);
 
+/*cmp func*/
+bool pri_cmp (const struct list_elem *a, const struct list_elem *b, void *aux)
+{
+	struct thread *t1 = list_entry(a, struct thread, elem);
+	struct thread *t2 = list_entry(b, struct thread, elem);
+	
+	return (t1->priority > t2->priority);
+}
+
 /* Initializes the threading system by transforming the code
    that's currently running into a thread.  This can't work in
    general and it is possible in this case only because loader.S
@@ -134,7 +143,7 @@ thread_tick (void)
   else
     kernel_ticks++;
 	
-	t->run_time++;
+	//t->run_time++;
   /* Enforce preemption. */
   if (++thread_ticks >= TIME_SLICE)
     intr_yield_on_return ();
@@ -205,10 +214,12 @@ thread_create (const char *name, int priority,
   sf->eip = switch_entry;
   sf->ebp = 0;
 
-  intr_set_level (old_level);
-
   /* Add to run queue. */
   thread_unblock (t);
+  if(t->priority > thread_current()->priority)
+    thread_yield();
+  
+  intr_set_level (old_level);
 
   return tid;
 }
@@ -246,9 +257,11 @@ thread_unblock (struct thread *t)
 
   old_level = intr_disable ();
   ASSERT (t->status == THREAD_BLOCKED);
-  list_push_back (&ready_list, &t->elem);
+  //list_push_back (&ready_list, &t->elem);
+  list_insert_ordered(&ready_list, &t->elem, pri_cmp, NULL);
   t->status = THREAD_READY;
-  t->entry_time = timer_ticks();
+  
+  //schedule();//in case you added a HIGH priority thread
   intr_set_level (old_level);
 }
 
@@ -318,11 +331,10 @@ thread_yield (void)
 
   old_level = intr_disable ();
   if (cur != idle_thread) 
-    list_push_back (&ready_list, &cur->elem);
+    //list_push_back (&ready_list, &cur->elem);
+	list_insert_ordered(&ready_list, &cur->elem, pri_cmp, NULL);
   cur->status = THREAD_READY;
-  cur->entry_time = timer_ticks();
   schedule ();
-  //printf("Name: %s run_time:%d\n", thread_current()->name, thread_current()->run_time);
   intr_set_level (old_level);
 }
 
@@ -347,7 +359,21 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
+  //The current thread is bound to be running now.
+  int old_priority = thread_current ()->priority;
   thread_current ()->priority = new_priority;
+  if(new_priority < old_priority)
+  {
+	//shut down interrupt
+	/*enum intr_level old_level;
+	old_level = intr_disable();*/
+  
+	list_sort(&ready_list, pri_cmp, NULL);
+	thread_yield();
+	//schedule();
+  
+	//intr_set_level(old_level);
+  }
 }
 
 /* Returns the current thread's priority. */
@@ -473,8 +499,8 @@ init_thread (struct thread *t, const char *name, int priority)
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
   
-  t->run_time = timer_ticks();
-  t->entry_time = 0;
+  //t->run_time = timer_ticks();
+  //t->entry_time = 0;
   
   t->magic = THREAD_MAGIC;
   list_push_back (&all_list, &t->allelem);
@@ -493,18 +519,6 @@ alloc_frame (struct thread *t, size_t size)
   return t->stack;
 }
 
-/*cmp func*/
-static bool cmp (const struct list_elem *a, const struct list_elem *b, void *aux)
-{
-	struct thread *t1 = list_entry(a, struct thread, elem);
-	struct thread *t2 = list_entry(b, struct thread, elem);
-	
-	if(t1->priority == t2->priority)
-		return t1->entry_time < t2->entry_time;
-	
-	return (t1->priority > t2->priority);
-}
-
 /* Chooses and returns the next thread to be scheduled.  Should
    return a thread from the run queue, unless the run queue is
    empty.  (If the running thread can continue running, then it
@@ -517,7 +531,6 @@ next_thread_to_run (void)
     return idle_thread;
   else
   {
-	list_sort(&ready_list, cmp, NULL);
 	struct thread* now = list_entry (list_pop_front (&ready_list), struct thread, elem);
 	return now;
   }
@@ -589,12 +602,11 @@ schedule (void)
   ASSERT (is_thread (next));
   if (cur != next)
   {
-	cur->entry_time = 
     prev = switch_threads (cur, next);
   }
   schedule_tail (prev); 
   
-  printf("%s %d\n", cur->name, cur->entry_time);
+  //printf("%s %d\n", cur->name, cur->entry_time);
   //getchar();
 }
 
