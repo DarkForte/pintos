@@ -5,8 +5,6 @@
 #include <list.h>
 #include <stdint.h>
 
-#include "decimal.h"
-
 /* States in a thread's life cycle. */
 enum thread_status
   {
@@ -19,6 +17,13 @@ enum thread_status
 /* Thread identifier type.
    You can redefine this to whatever type you like. */
 typedef int tid_t;
+
+//+++++++++++++++
+
+typedef int decimal;
+
+//---------------
+
 #define TID_ERROR ((tid_t) -1)          /* Error value for tid_t. */
 
 /* Thread priorities. */
@@ -95,8 +100,8 @@ struct thread
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
 	
-	int run_time;
-	int entry_time;
+	//int run_time;
+	//int entry_time;
 
 #ifdef USERPROG
     /* Owned by userprog/process.c. */
@@ -105,8 +110,8 @@ struct thread
 
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
-	
-	//+++++++++++++++
+  
+		//+++++++++++++++
 	
 	/* nice value */
 	int nice;
@@ -115,10 +120,19 @@ struct thread
 	decimal recent_cpu;
 	
 	//---------------
-	
-  };
+		
+	};
 
-//+++++++++++++++
+	//+++++++++++++++
+
+#define NUMD 14
+
+decimal Add(decimal x,decimal y);
+decimal Sub(decimal x,decimal y);
+decimal Mul(decimal x,decimal y);
+decimal Div(decimal x,decimal y);
+int ToInt(decimal x);
+decimal ToDec(int x);
 	
 /* load_avg value */
 decimal load_avg;
@@ -129,8 +143,14 @@ void update_load_avg (void);
 /* update recent_cpu */
 void update_recent_cpu (void);	
 
+/* increase recent_cpu */
+void increase_recent_cpu (void);
+
 /* update priority */
 void update_priority (void);	
+
+/* update load_avg, recent_cpu and priority */
+void update_feedback_list(void);
 
 //---------------
 	
@@ -169,5 +189,7 @@ int thread_get_nice (void);
 void thread_set_nice (int);
 int thread_get_recent_cpu (void);
 int thread_get_load_avg (void);
+
+bool pri_cmp (const struct list_elem *a, const struct list_elem *b, void *aux);
 
 #endif /* threads/thread.h */

@@ -17,9 +17,13 @@ struct  sleep_thread1{
 
 //+++++++++++++++
 
-extern update_load_avg ();
+extern void update_feedback_list(void);
+
+extern void update_priority(void);
 
 extern bool thread_mlfqs;
+
+extern void increase_recent_cpu (void);
 
 //---------------
 
