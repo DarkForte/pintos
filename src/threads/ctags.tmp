@@ -1,0 +1,549 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_MOD_BY	Bostjan Mihoric	/ccompletion@gmail.com/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	/unofficial modification/
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	/unofficial modification/
+ARENA_MAGIC	malloc.c	47;"	macro	file:
+BITMASK	vaddr.h	15;"	macro	funlike:
+CONTROL_REG	init.c	380;"	macro	file:
+CR0_EM	loader.S	55;"	define
+CR0_PE	loader.S	54;"	define
+CR0_PG	loader.S	56;"	define
+CR0_WP	loader.S	57;"	define
+FLAG_IF	flags.h	6;"	macro
+FLAG_MBS	flags.h	5;"	macro
+INTR_CNT	interrupt.c	22;"	macro	file:
+INTR_OFF	interrupt.h	10;"	enumerator	enum:intr_level
+INTR_ON	interrupt.h	11;"	enumerator	enum:intr_level
+LOADER_ARGS	loader.h	22;"	macro
+LOADER_ARGS_LEN	loader.h	28;"	macro
+LOADER_ARG_CNT	loader.h	23;"	macro
+LOADER_ARG_CNT_LEN	loader.h	29;"	macro
+LOADER_BASE	loader.h	5;"	macro
+LOADER_END	loader.h	6;"	macro
+LOADER_KERN_BASE	loader.h	9;"	macro
+LOADER_PHYS_BASE	loader.h	18;"	macro
+LOADER_RAM_PGS	loader.h	24;"	macro
+LOADER_RAM_PGS_LEN	loader.h	30;"	macro
+LOADER_SIG	loader.h	21;"	macro
+LOADER_SIG_LEN	loader.h	27;"	macro
+PAL_ASSERT	palloc.h	9;"	enumerator	enum:palloc_flags
+PAL_USER	palloc.h	11;"	enumerator	enum:palloc_flags
+PAL_ZERO	palloc.h	10;"	enumerator	enum:palloc_flags
+PDBITS	pte.h	28;"	macro
+PDMASK	pte.h	29;"	macro
+PDSHIFT	pte.h	27;"	macro
+PGBITS	vaddr.h	19;"	macro
+PGMASK	vaddr.h	21;"	macro
+PGSHIFT	vaddr.h	18;"	macro
+PGSIZE	vaddr.h	20;"	macro
+PHYS_BASE	vaddr.h	53;"	macro
+PIC0_CTRL	interrupt.c	16;"	macro	file:
+PIC0_DATA	interrupt.c	17;"	macro	file:
+PIC1_CTRL	interrupt.c	18;"	macro	file:
+PIC1_DATA	interrupt.c	19;"	macro	file:
+PRI_DEFAULT	thread.h	24;"	macro
+PRI_MAX	thread.h	25;"	macro
+PRI_MIN	thread.h	23;"	macro
+PTBITS	pte.h	22;"	macro
+PTE_A	pte.h	67;"	macro
+PTE_ADDR	pte.h	62;"	macro
+PTE_AVL	pte.h	63;"	macro
+PTE_D	pte.h	68;"	macro
+PTE_FLAGS	pte.h	61;"	macro
+PTE_P	pte.h	64;"	macro
+PTE_U	pte.h	66;"	macro
+PTE_W	pte.h	65;"	macro
+PTMASK	pte.h	24;"	macro
+PTSHIFT	pte.h	21;"	macro
+PTSPAN	pte.h	23;"	macro
+REAL	intr-stubs.S	105;"	define
+SEL_KCSEG	loader.h	35;"	macro
+SEL_KDSEG	loader.h	36;"	macro
+SEL_NULL	loader.h	34;"	macro
+STUB	intr-stubs.S	112;"	define
+SWITCH_CUR	switch.h	36;"	macro
+SWITCH_NEXT	switch.h	37;"	macro
+THREADS_FLAGS_H	flags.h	2;"	macro
+THREADS_INIT_H	init.h	2;"	macro
+THREADS_INTERRUPT_H	interrupt.h	2;"	macro
+THREADS_INTR_STUBS_H	intr-stubs.h	2;"	macro
+THREADS_IO_H	io.h	42;"	macro
+THREADS_LOADER_H	loader.h	2;"	macro
+THREADS_MALLOC_H	malloc.h	2;"	macro
+THREADS_PALLOC_H	palloc.h	2;"	macro
+THREADS_PTE_H	pte.h	2;"	macro
+THREADS_SWITCH_H	switch.h	2;"	macro
+THREADS_SYNCH_H	synch.h	2;"	macro
+THREADS_THREAD_H	thread.h	2;"	macro
+THREADS_VADDR_H	vaddr.h	2;"	macro
+THREAD_BLOCKED	thread.h	13;"	enumerator	enum:thread_status
+THREAD_DYING	thread.h	14;"	enumerator	enum:thread_status
+THREAD_MAGIC	thread.c	21;"	macro	file:
+THREAD_READY	thread.h	12;"	enumerator	enum:thread_status
+THREAD_RUNNING	thread.h	11;"	enumerator	enum:thread_status
+TID_ERROR	thread.h	20;"	macro
+TIME_SLICE	thread.c	54;"	macro	file:
+_end	kernel.lds.S	25;"	define
+_end_bss	kernel.lds.S	23;"	define
+_end_kernel_text	kernel.lds.S	17;"	define
+_start	kernel.lds.S	11;"	define
+_start_bss	kernel.lds.S	21;"	define
+a	init.c	321;"	local
+a	malloc.c	182;"	local
+a	malloc.c	224;"	local
+a	malloc.c	270;"	local
+a	malloc.c	94;"	local
+action	init.c	298;"	struct	file:
+actions	init.c	306;"	local	file:
+all_list	thread.c	29;"	variable	file:
+allelem	thread.h	91;"	member	struct:thread
+alloc_frame	thread.c	488;"	function	file:
+alloc_frame	thread.c	69;"	prototype	file:
+allocate_tid	thread.c	601;"	function	file:
+allocate_tid	thread.c	72;"	prototype	file:
+arena	malloc.c	50;"	struct	file:
+arena_to_block	malloc.c	286;"	function	file:
+arena_to_block	malloc.c	68;"	prototype	file:
+arg_cnt	loader.S	340;"	label
+argc	init.c	203;"	local
+argc	init.c	301;"	member	struct:action	file:
+args	loader.S	343;"	label
+argv	init.c	201;"	local	file:
+argv	init.c	73;"	local
+atoi	init.c	253;"	prototype	file:
+aux	thread.c	45;"	member	struct:kernel_thread_frame	file:
+b	malloc.c	143;"	local
+b	malloc.c	181;"	local
+b	malloc.c	223;"	local
+b	malloc.c	249;"	local
+b	malloc.c	93;"	local
+barrier	synch.h	49;"	macro	funlike:
+base	palloc.c	34;"	member	struct:pool	file:
+base_page_dir	init.c	43;"	variable
+block	malloc.c	58;"	struct	file:
+block_size	malloc.c	179;"	function	file:
+block_size	malloc.c	40;"	member	struct:desc	file:
+block_size	malloc.c	74;"	local
+block_to_arena	malloc.c	268;"	function	file:
+block_to_arena	malloc.c	67;"	prototype	file:
+blocks_per_arena	malloc.c	41;"	member	struct:desc	file:
+bm_pages	palloc.c	166;"	local
+calloc	malloc.c	159;"	function
+calloc	malloc.h	9;"	prototype
+cmp	thread.c	499;"	function	file:
+cond_broadcast	synch.c	331;"	function
+cond_broadcast	synch.h	42;"	prototype
+cond_init	synch.c	260;"	function
+cond_init	synch.h	39;"	prototype
+cond_signal	synch.c	312;"	function
+cond_signal	synch.h	41;"	prototype
+cond_wait	synch.c	288;"	function
+cond_wait	synch.h	40;"	prototype
+condition	synch.h	34;"	struct
+cr2	interrupt.c	395;"	local
+cs	interrupt.h	52;"	member	struct:intr_frame
+cur	switch.h	13;"	member	struct:switch_threads_frame
+cur	thread.c	315;"	local
+cur	thread.c	544;"	local
+cur	thread.c	581;"	local
+d	malloc.c	183;"	local
+d	malloc.c	225;"	local
+d	malloc.c	78;"	local
+d	malloc.c	92;"	local
+data	io.h	52;"	local
+data	io.h	73;"	local
+data	io.h	96;"	local
+desc	malloc.c	38;"	struct	file:
+desc	malloc.c	53;"	member	struct:arena	file:
+desc_cnt	malloc.c	65;"	variable	file:
+descs	malloc.c	64;"	variable	file:
+ds	interrupt.h	35;"	member	struct:intr_frame
+e	thread.c	336;"	local
+e0	interrupt.c	291;"	local
+e1	interrupt.c	291;"	local
+eax	interrupt.h	31;"	member	struct:intr_frame
+ebp	interrupt.h	26;"	member	struct:intr_frame
+ebp	switch.h	10;"	member	struct:switch_threads_frame
+ebx	interrupt.h	28;"	member	struct:intr_frame
+ebx	switch.h	11;"	member	struct:switch_threads_frame
+ecx	interrupt.h	30;"	member	struct:intr_frame
+edi	interrupt.h	24;"	member	struct:intr_frame
+edi	switch.h	8;"	member	struct:switch_threads_frame
+edx	interrupt.h	29;"	member	struct:intr_frame
+ef	thread.c	172;"	local
+eflags	interrupt.h	53;"	member	struct:intr_frame
+eip	interrupt.h	51;"	member	struct:intr_frame
+eip	switch.h	12;"	member	struct:switch_threads_frame
+eip	switch.h	25;"	member	struct:switch_entry_frame
+eip	thread.c	43;"	member	struct:kernel_thread_frame	file:
+elem	synch.c	118;"	local
+elem	synch.c	252;"	member	struct:semaphore_elem	file:
+elem	thread.h	94;"	member	struct:thread
+end	init.c	202;"	local
+end_page	palloc.c	186;"	local
+entry_time	thread.h	97;"	member	struct:thread
+error_code	interrupt.h	43;"	member	struct:intr_frame
+es	interrupt.h	34;"	member	struct:intr_frame
+esi	interrupt.h	25;"	member	struct:intr_frame
+esi	switch.h	9;"	member	struct:switch_threads_frame
+esp	interrupt.h	54;"	member	struct:intr_frame
+esp	thread.c	446;"	local
+esp_dummy	interrupt.h	27;"	member	struct:intr_frame
+external	interrupt.c	342;"	local
+flags	interrupt.c	62;"	local
+format_filesys	init.c	47;"	variable	file:
+frame_pointer	interrupt.h	47;"	member	struct:intr_frame
+free	malloc.c	219;"	function
+free	malloc.h	11;"	prototype
+free_cnt	malloc.c	54;"	member	struct:arena	file:
+free_elem	malloc.c	60;"	member	struct:block	file:
+free_end	palloc.c	57;"	local
+free_list	malloc.c	42;"	member	struct:desc	file:
+free_pages	palloc.c	58;"	local
+free_start	palloc.c	56;"	local
+fs	interrupt.h	33;"	member	struct:intr_frame
+function	init.c	337;"	prototype	file:
+function	thread.c	44;"	member	struct:kernel_thread_frame	file:
+gdt	loader.S	304;"	label
+gdtdesc	loader.S	309;"	label
+gs	interrupt.h	32;"	member	struct:intr_frame
+handler	interrupt.c	343;"	local
+holder	synch.h	23;"	member	struct:lock
+i	init.c	204;"	local
+i	init.c	322;"	local
+i	init.c	386;"	local
+i	interrupt.c	116;"	local
+i	malloc.c	127;"	local
+i	malloc.c	244;"	local
+i	synch.c	132;"	local
+i	synch.c	151;"	local
+idle	thread.c	403;"	function	file:
+idle	thread.c	64;"	prototype	file:
+idle_started	thread.c	109;"	local
+idle_started	thread.c	405;"	local
+idle_thread	thread.c	32;"	variable	file:
+idle_ticks	thread.c	49;"	variable	file:
+idt	interrupt.c	28;"	variable	file:
+idtr_operand	interrupt.c	115;"	local
+in_external_intr	interrupt.c	43;"	variable	file:
+in_kernel_text	init.c	177;"	local
+inb	io.h	49;"	function
+init_pool	palloc.c	161;"	function	file:
+init_pool	palloc.c	43;"	prototype	file:
+init_thread	thread.c	466;"	function	file:
+init_thread	thread.c	67;"	prototype	file:
+initial_thread	thread.c	35;"	variable	file:
+inl	io.h	93;"	function
+insb	io.h	60;"	function
+insl	io.h	104;"	function
+insw	io.h	82;"	function
+intr_context	interrupt.c	207;"	function
+intr_context	interrupt.c	219;"	prototype	file:
+intr_context	interrupt.c	381;"	prototype	file:
+intr_context	interrupt.h	64;"	prototype
+intr_disable	interrupt.c	99;"	function
+intr_disable	interrupt.h	17;"	prototype
+intr_dump_frame	interrupt.c	393;"	function
+intr_dump_frame	interrupt.h	67;"	prototype
+intr_enable	interrupt.c	83;"	function
+intr_enable	interrupt.h	16;"	prototype
+intr_entry	intr-stubs.S	19;"	label
+intr_exit	intr-stubs.S	51;"	label
+intr_exit	intr-stubs.h	17;"	prototype
+intr_frame	interrupt.h	20;"	struct
+intr_get_level	interrupt.c	60;"	function
+intr_get_level	interrupt.h	14;"	prototype
+intr_handler	interrupt.c	340;"	function
+intr_handler	interrupt.c	56;"	prototype	file:
+intr_handler_func	interrupt.h	58;"	typedef
+intr_handlers	interrupt.c	31;"	variable	file:
+intr_init	interrupt.c	113;"	function
+intr_init	interrupt.h	60;"	prototype
+intr_level	interrupt.h	8;"	enum
+intr_name	interrupt.c	417;"	function
+intr_name	interrupt.h	68;"	prototype
+intr_names	interrupt.c	34;"	variable	file:
+intr_register_ext	interrupt.c	176;"	function
+intr_register_ext	interrupt.h	61;"	prototype
+intr_register_int	interrupt.c	197;"	function
+intr_register_int	interrupt.h	62;"	prototype
+intr_set_level	interrupt.c	76;"	function
+intr_set_level	interrupt.h	15;"	prototype
+intr_stub_func	intr-stubs.h	13;"	typedef
+intr_stubs	intr-stubs.S	95;"	label
+intr_yield_on_return	interrupt.c	217;"	function
+intr_yield_on_return	interrupt.h	65;"	prototype
+inw	io.h	71;"	function
+is_kernel_vaddr	vaddr.h	64;"	function
+is_kernel_vaddr	vaddr.h	84;"	prototype
+is_thread	thread.c	245;"	prototype	file:
+is_thread	thread.c	276;"	prototype	file:
+is_thread	thread.c	458;"	function	file:
+is_thread	thread.c	491;"	prototype	file:
+is_thread	thread.c	587;"	prototype	file:
+is_user_vaddr	vaddr.h	57;"	function
+j	init.c	394;"	local
+kernel_pages	palloc.c	60;"	local
+kernel_pool	palloc.c	38;"	variable
+kernel_thread	thread.c	433;"	function	file:
+kernel_thread	thread.c	62;"	prototype	file:
+kernel_thread_frame	thread.c	41;"	struct	file:
+kernel_ticks	thread.c	50;"	variable	file:
+kf	thread.c	171;"	local
+lock	malloc.c	43;"	member	struct:desc	file:
+lock	palloc.c	32;"	member	struct:pool	file:
+lock	synch.h	21;"	struct
+lock_acquire	synch.c	193;"	function
+lock_acquire	synch.h	28;"	prototype
+lock_held_by_current_thread	synch.c	232;"	prototype	file:
+lock_held_by_current_thread	synch.c	242;"	function
+lock_held_by_current_thread	synch.c	295;"	prototype	file:
+lock_held_by_current_thread	synch.c	317;"	prototype	file:
+lock_held_by_current_thread	synch.h	31;"	prototype
+lock_init	synch.c	176;"	function
+lock_init	synch.h	27;"	prototype
+lock_release	synch.c	229;"	function
+lock_release	synch.h	30;"	prototype
+lock_try_acquire	synch.c	210;"	function
+lock_try_acquire	synch.h	29;"	prototype
+magic	malloc.c	52;"	member	struct:arena	file:
+magic	thread.h	105;"	member	struct:thread
+main	init.c	71;"	function
+make_gate	interrupt.c	289;"	function	file:
+make_idtr_operand	interrupt.c	328;"	function	file:
+make_idtr_operand	interrupt.c	53;"	prototype	file:
+make_intr_gate	interrupt.c	312;"	function	file:
+make_intr_gate	interrupt.c	51;"	prototype	file:
+make_trap_gate	interrupt.c	320;"	function	file:
+make_trap_gate	interrupt.c	52;"	prototype	file:
+malloc	malloc.c	90;"	function
+malloc	malloc.h	8;"	prototype
+malloc_init	malloc.c	72;"	function
+malloc_init	malloc.h	7;"	prototype
+min_size	malloc.c	208;"	local
+name	init.c	239;"	local
+name	init.c	300;"	member	struct:action	file:
+name	thread.h	88;"	member	struct:thread
+new_block	malloc.c	204;"	local
+next	switch.h	14;"	member	struct:switch_threads_frame
+next	thread.c	582;"	local
+next_thread_to_run	thread.c	513;"	function	file:
+next_thread_to_run	thread.c	66;"	prototype	file:
+next_tid	thread.c	603;"	local	file:
+now	thread.c	519;"	local
+old_level	interrupt.c	101;"	local
+old_level	interrupt.c	85;"	local
+old_level	synch.c	111;"	local
+old_level	synch.c	63;"	local
+old_level	synch.c	86;"	local
+old_level	thread.c	175;"	local
+old_level	thread.c	243;"	local
+old_level	thread.c	316;"	local
+old_size	malloc.c	207;"	local
+outb	io.h	115;"	function
+outl	io.h	155;"	function
+outsb	io.h	124;"	function
+outsl	io.h	164;"	function
+outsw	io.h	144;"	function
+outw	io.h	135;"	function
+p	init.c	202;"	local
+p	init.c	420;"	local
+p	malloc.c	161;"	local
+paddr	init.c	173;"	local
+page	init.c	166;"	local
+page_cnt	malloc.c	109;"	local
+page_from_pool	palloc.c	182;"	function	file:
+page_from_pool	palloc.c	45;"	prototype	file:
+page_idx	palloc.c	128;"	local
+page_idx	palloc.c	82;"	local
+page_no	palloc.c	184;"	local
+pagedir	thread.h	101;"	member	struct:thread
+pages	palloc.c	81;"	local
+paging_init	init.c	163;"	function	file:
+paging_init	init.c	57;"	prototype	file:
+palloc_flags	palloc.h	7;"	enum
+palloc_free_multiple	palloc.c	125;"	function
+palloc_free_multiple	palloc.h	21;"	prototype
+palloc_free_page	palloc.c	153;"	function
+palloc_free_page	palloc.h	20;"	prototype
+palloc_get_multiple	palloc.c	78;"	function
+palloc_get_multiple	palloc.h	19;"	prototype
+palloc_get_page	palloc.c	118;"	function
+palloc_get_page	palloc.h	18;"	prototype
+palloc_init	palloc.c	49;"	function
+palloc_init	palloc.h	17;"	prototype
+panic	loader.S	316;"	label
+panic_message	loader.S	326;"	label
+parse_options	init.c	234;"	function	file:
+parse_options	init.c	60;"	prototype	file:
+pd	init.c	165;"	local
+pd_no	pte.h	37;"	function
+pde_create	pte.h	71;"	function
+pde_get_pt	pte.h	78;"	function
+pde_idx	init.c	175;"	local
+pg_no	vaddr.h	29;"	function
+pg_ofs	palloc.c	130;"	prototype	file:
+pg_ofs	pte.h	72;"	prototype
+pg_ofs	pte.h	88;"	prototype
+pg_ofs	vaddr.h	24;"	function
+pg_round_down	vaddr.h	39;"	function
+pg_round_up	vaddr.h	34;"	function
+pic_end_of_interrupt	interrupt.c	260;"	function	file:
+pic_end_of_interrupt	interrupt.c	48;"	prototype	file:
+pic_init	interrupt.c	233;"	function	file:
+pic_init	interrupt.c	47;"	prototype	file:
+pool	palloc.c	127;"	local
+pool	palloc.c	30;"	struct	file:
+pool	palloc.c	80;"	local
+power_off	init.c	417;"	function
+power_off_when_done	init.c	51;"	variable
+prev	thread.c	583;"	local
+print_stats	init.c	440;"	function	file:
+print_stats	init.c	64;"	prototype	file:
+priority	thread.h	90;"	member	struct:thread
+process_execute	init.c	285;"	prototype	file:
+pt	init.c	165;"	local
+pt_no	pte.h	32;"	function
+pte_create_kernel	pte.h	87;"	function
+pte_create_user	pte.h	96;"	function
+pte_get_page	pte.h	102;"	function
+pte_idx	init.c	176;"	local
+ptov	vaddr.h	72;"	function
+ram_init	init.c	138;"	function	file:
+ram_init	init.c	56;"	prototype	file:
+ram_pages	init.c	40;"	variable
+ram_pgs	loader.S	333;"	label
+read_command_line	init.c	199;"	function	file:
+read_command_line	init.c	59;"	prototype	file:
+read_sector	loader.S	236;"	label
+ready_list	thread.c	25;"	variable	file:
+realloc	malloc.c	195;"	function
+realloc	malloc.h	10;"	prototype
+reboot	init.c	384;"	function
+reboot	init.h	19;"	prototype
+reboot_when_done	init.c	54;"	variable	file:
+register_handler	interrupt.c	160;"	function	file:
+rtc_get_time	init.c	272;"	prototype	file:
+run_actions	init.c	295;"	function	file:
+run_actions	init.c	61;"	prototype	file:
+run_task	init.c	279;"	function	file:
+run_time	thread.h	96;"	member	struct:thread
+running_thread	thread.c	444;"	function
+running_thread	thread.c	65;"	prototype	file:
+s	init.c	419;"	local
+save_ptr	init.c	238;"	local
+schedule	thread.c	579;"	function	file:
+schedule	thread.c	70;"	prototype	file:
+schedule_tail	thread.c	542;"	function
+schedule_tail	thread.c	71;"	prototype	file:
+sema	synch.c	131;"	local
+sema	synch.c	150;"	local
+sema_down	synch.c	61;"	function
+sema_down	synch.h	15;"	prototype
+sema_init	synch.c	45;"	function
+sema_init	synch.h	14;"	prototype
+sema_self_test	synch.c	129;"	function
+sema_self_test	synch.h	18;"	prototype
+sema_test_helper	synch.c	123;"	prototype	file:
+sema_test_helper	synch.c	148;"	function	file:
+sema_try_down	synch.c	84;"	function
+sema_try_down	synch.h	16;"	prototype
+sema_up	synch.c	109;"	function
+sema_up	synch.h	17;"	prototype
+semaphore	synch.c	253;"	member	struct:semaphore_elem	file:
+semaphore	synch.h	24;"	member	struct:lock
+semaphore	synch.h	8;"	struct
+semaphore_elem	synch.c	250;"	struct	file:
+sf	thread.c	173;"	local
+size	malloc.c	162;"	local
+ss	interrupt.h	55;"	member	struct:intr_frame
+stack	thread.h	89;"	member	struct:thread
+start	loader.S	61;"	label
+start	start.S	12;"	label
+start_page	palloc.c	185;"	local
+status	thread.h	87;"	member	struct:thread
+success	synch.c	212;"	local
+success	synch.c	87;"	local
+switch_entry	switch.S	53;"	label
+switch_entry	switch.h	28;"	prototype
+switch_entry_frame	switch.h	23;"	struct
+switch_threads	switch.S	17;"	label
+switch_threads	switch.h	20;"	prototype
+switch_threads_frame	switch.h	6;"	struct
+switch_thunk	switch.h	32;"	prototype
+t	thread.c	125;"	local
+t	thread.c	170;"	local
+t	thread.c	269;"	local
+t	thread.c	343;"	local
+t1	thread.c	501;"	local
+t2	thread.c	502;"	local
+task	init.c	281;"	local
+thread	thread.h	83;"	struct
+thread_action_func	thread.h	133;"	typedef
+thread_block	thread.c	223;"	function
+thread_block	thread.h	122;"	prototype
+thread_create	thread.c	167;"	function
+thread_create	thread.h	120;"	prototype
+thread_current	thread.c	267;"	function
+thread_current	thread.h	125;"	prototype
+thread_exit	thread.c	292;"	function
+thread_foreach	thread.c	334;"	function
+thread_foreach	thread.h	134;"	prototype
+thread_func	thread.h	119;"	typedef
+thread_get_load_avg	thread.c	379;"	function
+thread_get_load_avg	thread.h	142;"	prototype
+thread_get_nice	thread.c	371;"	function
+thread_get_nice	thread.h	139;"	prototype
+thread_get_priority	thread.c	357;"	function
+thread_get_priority	thread.h	136;"	prototype
+thread_get_recent_cpu	thread.c	387;"	function
+thread_get_recent_cpu	thread.h	141;"	prototype
+thread_init	thread.c	88;"	function
+thread_init	thread.h	113;"	prototype
+thread_mlfqs	thread.c	60;"	variable
+thread_name	thread.c	258;"	function
+thread_name	thread.h	127;"	prototype
+thread_print_stats	thread.c	145;"	function
+thread_print_stats	thread.h	117;"	prototype
+thread_set_nice	thread.c	364;"	function
+thread_set_nice	thread.h	140;"	prototype
+thread_set_priority	thread.c	350;"	function
+thread_set_priority	thread.h	137;"	prototype
+thread_stack_ofs	thread.c	615;"	variable
+thread_start	thread.c	106;"	function
+thread_start	thread.h	114;"	prototype
+thread_status	thread.h	9;"	enum
+thread_tick	thread.c	123;"	function
+thread_tick	thread.h	116;"	prototype
+thread_ticks	thread.c	55;"	variable	file:
+thread_tid	thread.c	284;"	function
+thread_tid	thread.h	126;"	prototype
+thread_unblock	thread.c	241;"	function
+thread_unblock	thread.h	123;"	prototype
+thread_yield	thread.c	313;"	function
+thread_yield	thread.h	130;"	prototype
+tid	thread.c	174;"	local
+tid	thread.c	604;"	local
+tid	thread.h	86;"	member	struct:thread
+tid_lock	thread.c	38;"	variable	file:
+tid_t	thread.h	19;"	typedef
+usage	init.c	346;"	function	file:
+usage	init.c	62;"	prototype	file:
+used_map	palloc.c	33;"	member	struct:pool	file:
+user_page_limit	palloc.c	41;"	variable
+user_pages	palloc.c	59;"	local
+user_pool	palloc.c	38;"	variable
+user_ticks	thread.c	51;"	variable	file:
+vaddr	init.c	174;"	local
+value	init.c	240;"	local
+value	synch.h	10;"	member	struct:semaphore
+vec_no	interrupt.h	38;"	member	struct:intr_frame
+vtop	vaddr.h	82;"	function
+waiter	synch.c	290;"	local
+waiters	synch.h	11;"	member	struct:semaphore
+waiters	synch.h	36;"	member	struct:condition
+yield_on_return	interrupt.c	44;"	variable	file:
+zero	intr-stubs.S	99;"	define

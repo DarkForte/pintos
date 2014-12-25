@@ -367,24 +367,29 @@ thread_foreach (thread_action_func *func, void *aux)
 void
 thread_set_priority (int new_priority) 
 {
+
   if (!thread_mlfqs)
 		{
 			//The current thread is bound to be running now.
 			int old_priority = thread_current ()->priority;
-			thread_current ()->priority = new_priority;
+			if(thread_current()-> base_priority == thread_current()->priority)
+			{
+			thread_current()->base_priority = new_priority;
+			thread_current()->priority = new_priority;
+			
 			if(new_priority < old_priority)
 				{
-					//shut down interrupt
-					/*enum intr_level old_level;
-					old_level = intr_disable();*/
-					
-					list_sort(&ready_list, pri_cmp, NULL);
-					thread_yield();
-					//schedule();
-					
-					//intr_set_level(old_level);
+				list_sort(&ready_list, pri_cmp, NULL);
+				thread_yield();
 				}
+			}
+			else //priority is higher than my base priority
+			{
+			thread_current ()->base_priority = new_priority;
+			thread_current ()->priority = max(thread_current()->priority, new_priority);
+			}
 		}
+
 }
 
 /* Returns the current thread's priority. */
@@ -685,8 +690,11 @@ init_thread (struct thread *t, const char *name, int priority)
 	if (thread_mlfqs)
 		t->priority = 0;
 	else
-		t->priority = priority;
-  
+		{
+			t->priority = priority;
+			t->base_priority = priority;
+		}
+
   //t->run_time = timer_ticks();
   //t->entry_time = 0;
   
@@ -808,18 +816,7 @@ schedule (void)
     prev = switch_threads (cur, next);
   }
   schedule_tail (prev); 
-	
-	// if (!list_empty(&ready_list))
-		// {
-			// struct thread *t;
-			// printf("-------------------------\n");
-			// struct list_elem *e;
-			// for (e = list_begin (&ready_list); e != list_end (&ready_list); e = list_next (e))
-				// {
-					// t = list_entry(e, struct thread, elem);
-					// printf("%8s : %5d\n",t->name,t->priority);
-				// }
-		// }
+
   //printf("%s %d\n", cur->name, cur->entry_time);
   //getchar();
 	
