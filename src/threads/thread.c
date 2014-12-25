@@ -361,19 +361,23 @@ thread_set_priority (int new_priority)
 {
   //The current thread is bound to be running now.
   int old_priority = thread_current ()->priority;
-  thread_current ()->priority = new_priority;
-  if(new_priority < old_priority)
+  if(thread_current()-> base_priority == thread_current()->priority)
   {
-	//shut down interrupt
-	/*enum intr_level old_level;
-	old_level = intr_disable();*/
-  
-	list_sort(&ready_list, pri_cmp, NULL);
-	thread_yield();
-	//schedule();
-  
-	//intr_set_level(old_level);
+	thread_current()->base_priority = new_priority;
+	thread_current()->priority = new_priority;
+	
+	if(new_priority < old_priority)
+    {
+	  list_sort(&ready_list, pri_cmp, NULL);
+	  thread_yield();
+    }
   }
+  else //priority is higher than my base priority
+  {
+	thread_current ()->base_priority = new_priority;
+	thread_current ()->priority = max(thread_current()->priority, new_priority);
+  }
+  
 }
 
 /* Returns the current thread's priority. */
@@ -498,6 +502,7 @@ init_thread (struct thread *t, const char *name, int priority)
   strlcpy (t->name, name, sizeof t->name);
   t->stack = (uint8_t *) t + PGSIZE;
   t->priority = priority;
+  t->base_priority = priority;
   
   //t->run_time = timer_ticks();
   //t->entry_time = 0;
