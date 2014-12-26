@@ -152,7 +152,6 @@ void update_load_avg (void);
 /* update recent_cpu */
 void update_recent_cpu (void);	
 
-
 /* increase recent_cpu */
 void increase_recent_cpu (void);
 

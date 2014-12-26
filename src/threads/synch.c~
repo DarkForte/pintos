@@ -317,7 +317,11 @@ lock_release (struct lock *lock)
   struct thread* f = NULL;
   struct list_elem *e = NULL;
   struct thread* now = lock->holder; 
+ // struct lock* nowLock = lock; 
   int maxPrio = 0;
+  //int maxThisPrio = 0;
+  //struct thread* maxTh = NULL;
+  //struct thread* maxTh = NULL;
 	if (thread_mlfqs == false)
 	{
 		//找到等待该lock的最高优先级的线程 
