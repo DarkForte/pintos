@@ -194,6 +194,7 @@ lock_init (struct lock *lock)
 }
 
 /*++++++++++++*/
+/*
 static struct lockTable*
 findID (struct lock* id)
 {
@@ -232,7 +233,7 @@ findPrio (struct thread* ptr, int prio)
 		}
     	}
     return high;
-}
+}*/
 /* Acquires LOCK, sleeping until it becomes available if
    necessary.  The lock must not already be held by the current
    thread.
@@ -247,32 +248,37 @@ lock_acquire (struct lock *lock)
   ASSERT (lock != NULL);
   ASSERT (!intr_context ());
   ASSERT (!lock_held_by_current_thread (lock));
-  struct lockTable table_elem;
-  struct lockTable* table_elem_p = NULL;
-  /*+++++++++++++++++++++*/
-  if(thread_mlfqs == false && lock->holder != NULL)
+  enum intr_level old_level;
+  struct thread* nowTh = thread_current();
+  struct lock* nowLock = lock;
+  if (thread_mlfqs == false && lock->holder != NULL)
   {
-  	list_insert_ordered (& (lock->semaphore->waiters), 
-		&thread_current ()->elem, pri_cmp, NULL);
-	while (lock->semaphore->value == 0)
-	{
-  		table_elem_p = findID (lock);
-  		//not find
-  		if (table_elem_p == NULL)
-  	    {
-  			table_elem.id = lock;
-  			table_elem.prio_low = lock->holder->priority;
-  			list_push_back (&prio_table, &(table_elem.elem));
-  	    }
-		set_priority(thread_current()->priority, lock->holder);
-		thread_block ();
-	}
+  	//old_level = intr_disable ();
+  	//update
+  	nowTh->wait_lock = lock;
+  	while (nowLock != NULL && nowLock->holder != NULL)
+  	{
+  		nowTh = nowLock->holder;
+  		set_priority (thread_current()->priority, nowTh);
+  		//保证信号量等待队列有序 
+  		if(nowTh->wait_lock != NULL)
+  			list_sort(&(nowTh->wait_lock->semaphore.waiters), pri_cmp, NULL);
+  		else if(nowTh->wait_sema != NULL)
+  			list_sort(&nowTh->wait_sema->waiters, pri_cmp, NULL);
+  		nowLock = nowTh->wait_lock;
+  	}
+  	nowTh = thread_current();
+  	list_push_back(&lock->holder->list_lock,&nowTh->lock_elem);
+  	sema_down (&lock->semaphore);
+  	list_remove (&nowTh->lock_elem);
+  	nowTh->wait_lock = NULL;
+  	//intr_set_level (old_level);
   }
   else
   {
- 	  sema_down (&lock->semaphore);
+  	sema_down (&lock->semaphore);
   }
-   lock->holder = thread_current ();
+  lock->holder = thread_current ();
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -305,28 +311,33 @@ lock_release (struct lock *lock)
 {
   ASSERT (lock != NULL);
   ASSERT (lock_held_by_current_thread (lock));
-
-  /*++++++++++++*/
-  struct lockTable* table_elem = NULL;
-  struct lockTable*  find_elem = NULL;
-  if (thread_mlfqs == false)
-  {	
-  	table_elem = findID (lock);
-  	if(table_elem != NULL)
-  	{
-  		find_elem = findPrio (lock->holder, table_elem->prio_low);
-  		if (find_elem == NULL)
-  		{
-  			lock->holder->priority = table_elem->prio_low;
-  			//thread_set_priority(table_elem->prio_low);
-  		}
-  		else
-  		{
-  			find_elem->prio_low = table_elem->prio_low;
-  		}
-  		list_remove (&table_elem->elem);
-  	}
-  }
+  //++++++++++++++++
+  struct thread* f = NULL;
+  struct list_elem *e = NULL;
+  struct thread* now = lock->holder; 
+ // struct lock* nowLock = lock; 
+  int maxPrio = 0;
+  //struct thread* maxTh = NULL;
+	if (thread_mlfqs == false)
+	{
+		//找到等待该lock的最高优先级的线程优先级 
+		for (e = list_begin (&now->list_lock); e != list_end (&now->list_lock);
+        	   e = list_next (e))
+        	{
+        		f = list_entry (e, struct thread, elem);
+        		if (f->wait_lock != lock && f->priority > maxPrio)
+        		{
+				maxPrio = f->priority; 
+        		}
+        	}
+       		maxPrio = max (maxPrio, now->base_priority);
+       		set_priority (maxPrio, now);
+      	 	//保证信号量等待队列有序 
+  		if(now->wait_lock != NULL)
+  			list_sort(&now->wait_lock->semaphore.waiters, pri_cmp, NULL);
+  		else if(now->wait_sema != NULL)
+  			list_sort(&now->wait_sema->waiters, pri_cmp, NULL);
+ 	}
   lock->holder = NULL;
   sema_up (&lock->semaphore);
 }

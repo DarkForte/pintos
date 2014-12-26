@@ -396,11 +396,12 @@ void
 set_priority (int new_priority, struct thread* th)
 {
 	th->priority = new_priority;
-	if(th->status == THREAD_READY)
+/*	if(th->status == THREAD_READY)
 	{
 		list_sort(&ready_list, pri_cmp, NULL);
 		//thread_yield();
 	}
+	*/
 	
 }
 
@@ -710,6 +711,12 @@ init_thread (struct thread *t, const char *name, int priority)
   //t->run_time = timer_ticks();
   //t->entry_time = 0;
   
+  	/*++++++++++++*/
+	list_init(&(t->list_lock));
+	t->wait_sema = NULL;
+	t->wait_lock = NULL; 
+  
+  
   t->magic = THREAD_MAGIC;
   list_push_back (&all_list, &t->allelem);
 	
@@ -726,6 +733,7 @@ init_thread (struct thread *t, const char *name, int priority)
 		t->recent_cpu = thread_current ()->recent_cpu;
 	
   //---------------
+  
 	
 }
 

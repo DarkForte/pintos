@@ -102,6 +102,12 @@ struct thread
 
     /* Shared between thread.c and synch.c. */
     struct list_elem elem;              /* List element. */
+    
+	/*+++++++++++++++++++*/
+	struct list list_lock;
+	struct semaphore* wait_sema;
+	struct lock* wait_lock; 
+	struct list_elem lock_elem;
 	
 	//int run_time;
 	//int entry_time;
