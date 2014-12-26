@@ -392,6 +392,18 @@ thread_set_priority (int new_priority)
 
 }
 
+void
+set_priority (int new_priority, struct thread* th)
+{
+	th->priority = new_priority;
+	if(th->status == THREAD_READY)
+	{
+		list_sort(&ready_list, pri_cmp, NULL);
+		//thread_yield();
+	}
+	
+}
+
 /* Returns the current thread's priority. */
 int
 thread_get_priority (void) 

@@ -30,7 +30,10 @@
 #include <stdio.h>
 #include <string.h>
 #include "threads/interrupt.h"
-#include "threads/thread.h"
+
+
+/*+++++++++++++++++++++++++*/
+static struct list prio_table;
 
 /* Initializes semaphore SEMA to VALUE.  A semaphore is a
    nonnegative integer along with two atomic operators for
@@ -184,11 +187,52 @@ void
 lock_init (struct lock *lock)
 {
   ASSERT (lock != NULL);
-
+  /*++++++++*/
+  list_init (&prio_table);
   lock->holder = NULL;
   sema_init (&lock->semaphore, 1);
 }
 
+/*++++++++++++*/
+static struct lockTable*
+findID (struct lock* id)
+{
+	ASSERT (id);
+	struct lockTable* table_elem = NULL;
+	struct list_elem *e = NULL;
+	for (e = list_begin (&prio_table); e != list_end (&prio_table);
+           e = list_next (e))
+    	{
+         	 table_elem = list_entry (e, struct lockTable, elem);
+         	 if (table_elem->id == id)
+         	 {
+          		return table_elem;
+          	}
+    	}
+    return NULL;
+}
+
+static struct lockTable*
+findPrio (struct thread* ptr, int prio)
+{
+	const int inf = 1000000;
+	ASSERT (ptr);
+	struct lockTable* table_elem = NULL;
+	struct list_elem *e = NULL;
+	int phigh = inf;
+	struct lockTable* high = NULL;
+	for (e = list_begin (&prio_table); e != list_end (&prio_table);
+           e = list_next (e))
+    	{
+    		table_elem = list_entry (e, struct lockTable, elem);
+    		if (table_elem->id->holder == ptr && table_elem->prio_low > prio && table_elem->prio_low < phigh)
+		{
+			phigh = table_elem->prio_low;
+			high = table_elem;
+		}
+    	}
+    return high;
+}
 /* Acquires LOCK, sleeping until it becomes available if
    necessary.  The lock must not already be held by the current
    thread.
@@ -203,9 +247,32 @@ lock_acquire (struct lock *lock)
   ASSERT (lock != NULL);
   ASSERT (!intr_context ());
   ASSERT (!lock_held_by_current_thread (lock));
-
-  sema_down (&lock->semaphore);
-  lock->holder = thread_current ();
+  struct lockTable table_elem;
+  struct lockTable* table_elem_p = NULL;
+  /*+++++++++++++++++++++*/
+  if(thread_mlfqs == false && lock->holder != NULL)
+  {
+  	list_insert_ordered (& (lock->semaphore->waiters), 
+		&thread_current ()->elem, pri_cmp, NULL);
+	while (lock->semaphore->value == 0)
+	{
+  		table_elem_p = findID (lock);
+  		//not find
+  		if (table_elem_p == NULL)
+  	    {
+  			table_elem.id = lock;
+  			table_elem.prio_low = lock->holder->priority;
+  			list_push_back (&prio_table, &(table_elem.elem));
+  	    }
+		set_priority(thread_current()->priority, lock->holder);
+		thread_block ();
+	}
+  }
+  else
+  {
+ 	  sema_down (&lock->semaphore);
+  }
+   lock->holder = thread_current ();
 }
 
 /* Tries to acquires LOCK and returns true if successful or false
@@ -239,6 +306,27 @@ lock_release (struct lock *lock)
   ASSERT (lock != NULL);
   ASSERT (lock_held_by_current_thread (lock));
 
+  /*++++++++++++*/
+  struct lockTable* table_elem = NULL;
+  struct lockTable*  find_elem = NULL;
+  if (thread_mlfqs == false)
+  {	
+  	table_elem = findID (lock);
+  	if(table_elem != NULL)
+  	{
+  		find_elem = findPrio (lock->holder, table_elem->prio_low);
+  		if (find_elem == NULL)
+  		{
+  			lock->holder->priority = table_elem->prio_low;
+  			//thread_set_priority(table_elem->prio_low);
+  		}
+  		else
+  		{
+  			find_elem->prio_low = table_elem->prio_low;
+  		}
+  		list_remove (&table_elem->elem);
+  	}
+  }
   lock->holder = NULL;
   sema_up (&lock->semaphore);
 }
