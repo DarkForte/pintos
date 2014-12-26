@@ -368,27 +368,27 @@ void
 thread_set_priority (int new_priority) 
 {
 
-  if (!thread_mlfqs)
-		{
-			//The current thread is bound to be running now.
-			int old_priority = thread_current ()->priority;
-			if(thread_current()-> base_priority == thread_current()->priority)
-			{
-			thread_current()->base_priority = new_priority;
-			thread_current()->priority = new_priority;
+	if (!thread_mlfqs)
+	{
+		//The current thread is bound to be running now.
+	    int old_priority = thread_current ()->priority;
+	    if(thread_current()-> base_priority == thread_current()->priority)
+        {
+		    thread_current()->base_priority = new_priority;
+		    thread_current()->priority = new_priority;
 			
-			if(new_priority < old_priority)
-				{
-				list_sort(&ready_list, pri_cmp, NULL);
+		    if(new_priority < old_priority)
+		    {
+		        list_sort(&ready_list, pri_cmp, NULL);
 				thread_yield();
-				}
-			}
-			else //priority is higher than my base priority
-			{
-			thread_current ()->base_priority = new_priority;
-			thread_current ()->priority = max(thread_current()->priority, new_priority);
 			}
 		}
+		else //priority is higher than my base priority
+		{
+			thread_current ()->base_priority = new_priority;
+			thread_current ()->priority = max(thread_current()->priority, new_priority);
+		}
+	}
 
 }
 

@@ -120,12 +120,12 @@ timer_sleep (int64_t ticks)
     thread_yield ();*/
    
     //由于睡眠而被阻塞，进入睡眠队列 
+	enum intr_level old_level = intr_disable ();
   	struct  sleep_thread1 tmp; 
 	tmp.ptr = thread_current();
 	tmp.wake_time = start+ticks;
 	//list_push_back(&sleep_list,&tmp.elem);
 	list_insert_ordered(&sleep_list,&tmp.elem,cmp,NULL);
- 	enum intr_level old_level = intr_disable ();
 	thread_block(); //该函数要求必须关中断 
 	intr_set_level (old_level);
 }
