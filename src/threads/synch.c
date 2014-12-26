@@ -309,35 +309,37 @@ lock_try_acquire (struct lock *lock)
 void
 lock_release (struct lock *lock) 
 {
+  //printf("lock holder: %s\n", lock->holder->name);
   ASSERT (lock != NULL);
   ASSERT (lock_held_by_current_thread (lock));
+
   //++++++++++++++++
   struct thread* f = NULL;
   struct list_elem *e = NULL;
   struct thread* now = lock->holder; 
+  
  // struct lock* nowLock = lock; 
   int maxPrio = 0;
   //struct thread* maxTh = NULL;
-	if (thread_mlfqs == false)
-	{
-		//找到等待该lock的最高优先级的线程优先级 
-		for (e = list_begin (&now->list_lock); e != list_end (&now->list_lock);
-        	   e = list_next (e))
-        	{
-        		f = list_entry (e, struct thread, elem);
-        		if (f->wait_lock != lock && f->priority > maxPrio)
-        		{
-				maxPrio = f->priority; 
-        		}
-        	}
-       		maxPrio = max (maxPrio, now->base_priority);
-       		set_priority (maxPrio, now);
-      	 	//保证信号量等待队列有序 
-  		if(now->wait_lock != NULL)
-  			list_sort(&now->wait_lock->semaphore.waiters, pri_cmp, NULL);
-  		else if(now->wait_sema != NULL)
-  			list_sort(&now->wait_sema->waiters, pri_cmp, NULL);
- 	}
+  if (thread_mlfqs == false)
+  { 
+	for (e = list_begin (&now->list_lock); e != list_end (&now->list_lock); 
+			e = list_next (e))
+    {
+		f = list_entry (e, struct thread, lock_elem);
+        if (f->wait_lock != lock && f->priority > maxPrio)
+        {
+			maxPrio = f->priority; 
+        }
+    }
+    maxPrio = max (maxPrio, now->base_priority);
+    set_priority (maxPrio, now);
+    //保证信号量等待队列有序 
+	if(now->wait_lock != NULL)
+  		list_sort(&now->wait_lock->semaphore.waiters, pri_cmp, NULL);
+  	else if(now->wait_sema != NULL)
+  		list_sort(&now->wait_sema->waiters, pri_cmp, NULL);
+   }
   lock->holder = NULL;
   sema_up (&lock->semaphore);
 }
