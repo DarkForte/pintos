@@ -73,7 +73,15 @@ sema_down (struct semaphore *sema)
     {
       //list_push_back (&sema->waiters, &thread_current ()->elem);
 	  list_insert_ordered(&sema->waiters, &thread_current ()->elem, pri_cmp, NULL);
+	  if(thread_current()->wait_lock == NULL)
+	  {
+	  	thread_current()->wait_sema = sema;
+	  }
       thread_block ();
+      if(thread_current()->wait_lock == NULL)
+	  {
+	  	thread_current()->wait_sema = NULL;
+	  }
     }
   sema->value--;
   intr_set_level (old_level);
@@ -268,16 +276,10 @@ lock_acquire (struct lock *lock)
   		nowLock = nowTh->wait_lock;
   	}
   	nowTh = thread_current();
-  	list_push_back(&lock->holder->list_lock,&nowTh->lock_elem);
-  	sema_down (&lock->semaphore);
-  	list_remove (&nowTh->lock_elem);
-  	nowTh->wait_lock = NULL;
+  	list_push_back(&lock->holder->list_lock,&nowTh->lock_elem);	
   	//intr_set_level (old_level);
   }
-  else
-  {
-  	sema_down (&lock->semaphore);
-  }
+   sema_down (&lock->semaphore);
   lock->holder = thread_current ();
 }
 
@@ -317,6 +319,8 @@ lock_release (struct lock *lock)
   struct thread* now = lock->holder; 
  // struct lock* nowLock = lock; 
   int maxPrio = 0;
+  int maxThisPrio = 0;
+  struct thread* maxTh = NULL;
   //struct thread* maxTh = NULL;
 	if (thread_mlfqs == false)
 	{
@@ -324,11 +328,21 @@ lock_release (struct lock *lock)
 		for (e = list_begin (&now->list_lock); e != list_end (&now->list_lock);
         	   e = list_next (e))
         	{
-        		f = list_entry (e, struct thread, elem);
+        		f = list_entry (e, struct thread, lock_elem);
         		if (f->wait_lock != lock && f->priority > maxPrio)
         		{
-				maxPrio = f->priority; 
+					maxPrio = f->priority; 
         		}
+        		if(f->wait_lock == lock && f->priority > maxThisPrio)
+        		{
+        			maxThisPrio = f->priority;
+        			maxTh = f;
+        		}
+        	}
+        	if(maxTh != NULL)
+        	{
+        		list_remove (&maxTh->lock_elem);
+  				maxTh->wait_lock = NULL;
         	}
        		maxPrio = max (maxPrio, now->base_priority);
        		set_priority (maxPrio, now);
