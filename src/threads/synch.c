@@ -317,14 +317,10 @@ lock_release (struct lock *lock)
   struct thread* f = NULL;
   struct list_elem *e = NULL;
   struct thread* now = lock->holder; 
- // struct lock* nowLock = lock; 
   int maxPrio = 0;
-  int maxThisPrio = 0;
-  struct thread* maxTh = NULL;
-  //struct thread* maxTh = NULL;
 	if (thread_mlfqs == false)
 	{
-		//找到等待该lock的最高优先级的线程优先级 
+		//找到等待该lock的最高优先级的线程 
 		for (e = list_begin (&now->list_lock); e != list_end (&now->list_lock);
         	   e = list_next (e))
         	{
@@ -333,17 +329,13 @@ lock_release (struct lock *lock)
         		{
 					maxPrio = f->priority; 
         		}
-        		if(f->wait_lock == lock && f->priority > maxThisPrio)
+        		if(f->wait_lock == lock)
         		{
-        			maxThisPrio = f->priority;
-        			maxTh = f;
+        			list_remove (&f->lock_elem);
+  				f->wait_lock = NULL;
         		}
         	}
-        	if(maxTh != NULL)
-        	{
-        		list_remove (&maxTh->lock_elem);
-  				maxTh->wait_lock = NULL;
-        	}
+
        		maxPrio = max (maxPrio, now->base_priority);
        		set_priority (maxPrio, now);
       	 	//保证信号量等待队列有序 
