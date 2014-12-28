@@ -228,30 +228,17 @@ timer_interrupt (struct intr_frame *args UNUSED)
 		
 	//+++++++++++++++
 	
-	
 	/* update the value of priority */
 	if (timer_ticks () % 4 == 0 && thread_mlfqs)
-		{
-			enum intr_level old_level;
-			old_level = intr_disable ();
-			update_priority ();
-			intr_set_level (old_level);
-		}
+		update_priority ();
 	
 	/* update the value of load_avg */
-	
 	if (timer_ticks () % TIMER_FREQ == 0 && thread_mlfqs)
-		{
-			enum intr_level old_level;
-			old_level = intr_disable ();
-			
-			update_feedback_list();
-			
-			intr_set_level (old_level);
-		}
+		update_feedback_list();
 		
 	/* increase recent_cpu */
-	increase_recent_cpu ();
+	if (thread_mlfqs)
+		increase_recent_cpu ();
 		
 	//---------------
 	

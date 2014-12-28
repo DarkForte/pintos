@@ -435,9 +435,7 @@ thread_set_nice (int nice UNUSED)
 int
 thread_get_nice (void) 
 {
-  /* Not yet implemented. */
-  //return 0;
-	
+
 	//+++++++++++++++
 	
   return thread_current ()->nice;
@@ -450,8 +448,6 @@ thread_get_nice (void)
 int
 thread_get_load_avg (void) 
 {
-  /* Not yet implemented. */
-  //return 0;
 	
 	//+++++++++++++++
 	
@@ -568,35 +564,44 @@ update_priority (void)
 							t->priority = PRI_MAX;
 						else if (t->priority < PRI_MIN)
 							t->priority = PRI_MIN;
-							
-						//printf("%8s : priority-%2d recent_cpu-%7d nice-%7d\n",
-						//				t->name,t->priority,ToInt (t->recent_cpu),t->nice);
 				}
     }
-	//printf("-----------------\n");
 	list_sort(&ready_list, pri_cmp, NULL);
 }
 
-decimal ToDec(int x){
+decimal 
+ToDec(int x)
+{
 	return x * (1 << NUMD);
 }
-int ToInt(decimal x){
+
+int 
+ToInt(decimal x)
+{
 	return (x >=0) ? (x + (1 << (NUMD - 1))) / (1 << NUMD) : 
 					(x - (1 << (NUMD - 1))) / (1 << NUMD);
 }
-decimal Add(decimal x,decimal y)
+
+decimal 
+Add(decimal x,decimal y)
 {
 	return x + y;
 }
-decimal Sub(decimal x,decimal y)
+
+decimal 
+Sub(decimal x,decimal y)
 {
 	return x - y;
 }
-decimal Mul(decimal x,decimal y)
+
+decimal 
+Mul(decimal x,decimal y)
 {
 	return ( ( (int64_t)x) * (int64_t)y) / (1 << NUMD);
 }
-decimal Div(decimal x,decimal y)
+
+decimal 
+Div(decimal x,decimal y)
 {
 	return ( ( (int64_t) x) * (1 << NUMD)) / y;
 }
@@ -608,9 +613,7 @@ decimal Div(decimal x,decimal y)
 int
 thread_get_recent_cpu (void) 
 {
-  /* Not yet implemented. */
-  //return 0;
-	
+
 	//+++++++++++++++
 	
 	return ToInt (Mul (thread_current ()->recent_cpu, ToDec (100)));

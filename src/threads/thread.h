@@ -120,7 +120,7 @@ struct thread
     /* Owned by thread.c. */
     unsigned magic;                     /* Detects stack overflow. */
   
-		//+++++++++++++++
+	//+++++++++++++++
 	
 	/* nice value */
 	int nice;
@@ -132,7 +132,7 @@ struct thread
 		
 	};
 
-	//+++++++++++++++
+//+++++++++++++++
 
 #define NUMD 14
 
