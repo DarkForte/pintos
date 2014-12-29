@@ -73,11 +73,13 @@ sema_down (struct semaphore *sema)
     {
       //list_push_back (&sema->waiters, &thread_current ()->elem);
 	  list_insert_ordered(&sema->waiters, &thread_current ()->elem, pri_cmp, NULL);
+	  //assignment for wait_sema
 	  if(thread_current()->wait_lock == NULL)
 	  {
 	  	thread_current()->wait_sema = sema;
 	  }
       thread_block ();
+      //clear wait_sema
       if(thread_current()->wait_lock == NULL)
 	  {
 	  	thread_current()->wait_sema = NULL;
@@ -195,8 +197,6 @@ void
 lock_init (struct lock *lock)
 {
   ASSERT (lock != NULL);
-  /*++++++++*/
-  list_init (&prio_table);
   lock->holder = NULL;
   sema_init (&lock->semaphore, 1);
 }
@@ -261,14 +261,13 @@ lock_acquire (struct lock *lock)
   struct lock* nowLock = lock;
   if (thread_mlfqs == false && lock->holder != NULL)
   {
-  	//old_level = intr_disable ();
-  	//update
+  	//update tree
   	nowTh->wait_lock = lock;
   	while (nowLock != NULL && nowLock->holder != NULL)
   	{
   		nowTh = nowLock->holder;
   		set_priority (thread_current()->priority, nowTh);
-  		//保证信号量等待队列有序 
+  		//sort semaphore waiter
   		if(nowTh->wait_lock != NULL)
   			list_sort(&(nowTh->wait_lock->semaphore.waiters), pri_cmp, NULL);
   		else if(nowTh->wait_sema != NULL)
@@ -277,7 +276,6 @@ lock_acquire (struct lock *lock)
   	}
   	nowTh = thread_current();
   	list_push_back(&lock->holder->list_lock,&nowTh->lock_elem);	
-  	//intr_set_level (old_level);
   }
    sema_down (&lock->semaphore);
   lock->holder = thread_current ();
@@ -320,7 +318,7 @@ lock_release (struct lock *lock)
   int maxPrio = 0;
 	if (thread_mlfqs == false)
 	{
-		//找到等待该lock的最高优先级的线程 
+		//update priority and tree
 		for (e = list_begin (&now->list_lock); e != list_end (&now->list_lock);
         	   e = list_next (e))
         	{
@@ -332,13 +330,12 @@ lock_release (struct lock *lock)
         		if(f->wait_lock == lock)
         		{
         			list_remove (&f->lock_elem);
-  				f->wait_lock = NULL;
+  					f->wait_lock = NULL;
         		}
         	}
-
        		maxPrio = max (maxPrio, now->base_priority);
        		set_priority (maxPrio, now);
-      	 	//保证信号量等待队列有序 
+      	 	//sort semaphore waiter
   		if(now->wait_lock != NULL)
   			list_sort(&now->wait_lock->semaphore.waiters, pri_cmp, NULL);
   		else if(now->wait_sema != NULL)

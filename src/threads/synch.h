@@ -50,15 +50,6 @@ void cond_broadcast (struct condition *, struct lock *);
 #define barrier() asm volatile ("" : : : "memory")
 
 
-/*++++++++++++++++++++++++++++++++++*/
-/*
-struct lockTable{
-//	struct thread* ptr;
-	struct lock* id;
-	int prio_low;
-	struct list_elem elem;  
-};
-*/
 extern bool thread_mlfqs;
 
 #endif /* threads/synch.h */

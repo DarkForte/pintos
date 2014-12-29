@@ -8,7 +8,7 @@
 
 /* Number of timer interrupts per second. */
 #define TIMER_FREQ 100
-/*自定义数据结构*/
+//+++++++++
 struct  sleep_thread1{
 	struct thread* ptr;
 	int64_t wake_time;

@@ -29,7 +29,7 @@ static bool too_many_loops (unsigned loops);
 static void busy_wait (int64_t loops);
 static void real_time_sleep (int64_t num, int32_t denom);
 static void real_time_delay (int64_t num, int32_t denom);
-//新添加
+//++++++++++
 static struct list sleep_list;
 
 /* Sets up the 8254 Programmable Interval Timer (PIT) to
@@ -41,7 +41,7 @@ timer_init (void)
   /* 8254 input frequency divided by TIMER_FREQ, rounded to
      nearest. */
   uint16_t count = (1193180 + TIMER_FREQ / 2) / TIMER_FREQ;
-  //新添加初始化 
+  //init sleep_list
   list_init(&sleep_list);
   outb (0x43, 0x34);    /* CW: counter 0, LSB then MSB, mode 2, binary. */
   outb (0x40, count & 0xff);
@@ -95,14 +95,14 @@ timer_elapsed (int64_t then)
 {
   return timer_ticks () - then;
 }
-//自定义比较函数 
+//compare function
 bool
 cmp(struct list_elem* x,struct list_elem* y,void* aux)
 {
-	ASSERT(x != NULL);
-	ASSERT(y != NULL);
-	struct sleep_thread1 *f1 = list_entry(x, struct sleep_thread1, elem);
-	struct sleep_thread1 *f2 = list_entry(y, struct sleep_thread1, elem);
+	ASSERT (x != NULL);
+	ASSERT (y != NULL);
+	struct sleep_thread1 *f1 = list_entry (x, struct sleep_thread1, elem);
+	struct sleep_thread1 *f2 = list_entry (y, struct sleep_thread1, elem);
 	return (f1->wake_time) < (f2->wake_time);
 }
 
@@ -119,14 +119,13 @@ timer_sleep (int64_t ticks)
  /* while (timer_elapsed (start) < ticks) 
     thread_yield ();*/
    
-    //由于睡眠而被阻塞，进入睡眠队列 
+    //block for sleep and insert to sleep_list
 	enum intr_level old_level = intr_disable ();
   	struct  sleep_thread1 tmp; 
-	tmp.ptr = thread_current();
+	tmp.ptr = thread_current ();
 	tmp.wake_time = start+ticks;
-	//list_push_back(&sleep_list,&tmp.elem);
-	list_insert_ordered(&sleep_list,&tmp.elem,cmp,NULL);
-	thread_block(); //该函数要求必须关中断 
+	list_insert_ordered (&sleep_list,&tmp.elem,cmp,NULL);
+	thread_block (); //the function require intr_disable
 	intr_set_level (old_level);
 }
 
@@ -204,25 +203,21 @@ timer_print_stats (void)
 static void
 timer_interrupt (struct intr_frame *args UNUSED)
 {
-  ticks++;
-	
-	
-	
-  //新添加
-  //遍历链表
+    ticks++;
+    //treval sleep_list
     struct list_elem *e;
+    struct sleep_thread1 *f
     for (e = list_begin (&sleep_list); e != list_end (&sleep_list);)
     {
-        struct sleep_thread1 *f = list_entry(e, struct sleep_thread1, elem);
-        if(f->wake_time <= timer_ticks ())
+        f = list_entry (e, struct sleep_thread1, elem);
+        if (f->wake_time <= timer_ticks ())
         {
-        	thread_unblock(f->ptr);
-        	e = list_remove(e);
+        	thread_unblock (f->ptr);
+        	e = list_remove (e);
         }
         else
         {
         	break;
-		//e = list_next(e);
         }
     }	
 		
