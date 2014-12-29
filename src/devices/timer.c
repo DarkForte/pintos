@@ -206,7 +206,7 @@ timer_interrupt (struct intr_frame *args UNUSED)
     ticks++;
     //treval sleep_list
     struct list_elem *e;
-    struct sleep_thread1 *f
+    struct sleep_thread1 *f;
     for (e = list_begin (&sleep_list); e != list_end (&sleep_list);)
     {
         f = list_entry (e, struct sleep_thread1, elem);
